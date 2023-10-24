@@ -7,10 +7,10 @@ import lombok.Value;
 @Builder
 public class CronEntry {
 
-  String minute;
-  String hour;
-  String dayOfMonth;
-  String month;
-  String dayOfWeek;
+  TimeEntry minute;
+  TimeEntry hour;
+  TimeEntry dayOfMonth;
+  TimeEntry month;
+  TimeEntry dayOfWeek;
   String command;
 }

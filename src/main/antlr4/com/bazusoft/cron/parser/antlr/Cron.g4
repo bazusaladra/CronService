@@ -8,12 +8,11 @@ month : timeEntry;
 dayOfWeek : timeEntry;
 timeEntry : allTimes | timeInteval | timeRange | specificTimes;
 allTimes: '*';
-timeInteval: '*/' NUMBER;
+timeInteval: '*' '/' NUMBER;
 timeRange: NUMBER '-' NUMBER;
-specificTimes: NUMBERS;
+specificTimes: NUMBER (',' NUMBER)*;
 command : (TEXT | ' ')+;
 
-NUMBERS : NUMBER | (NUMBER ',' NUMBERS);
 NUMBER : (DIGIT | DOUBLE_DIGIT);
 TEXT : LETTER+;
 

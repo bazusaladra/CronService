@@ -1,20 +1,21 @@
-package com.bazusoft.cron.parser;
+package com.bazusoft.cron.visitor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.bazusoft.cron.parser.CronEntryParser;
 import com.bazusoft.cron.parser.model.*;
+import java.util.List;
 import java.util.Set;
+
 import org.junit.jupiter.api.Test;
 
-public class CronEntryParserUnitTest {
+class CronVisitorUnitTest {
 
-  private final CronEntryParser cronEntryParser = new CronEntryParser();
+  private final CronVisitor cronVisitor = new CronVisitor();
 
   @Test
   public void shouldParseCronExpressions() {
-    String input = "*/15 0 1,15 * 1-5 /usr/bin/find";
-    CronEntry cronEntry = cronEntryParser.parseCronEntry(input);
-    assertEquals(
+    CronEntry input =
         CronEntry.builder()
             .minute(TimeIntervalEntry.builder().interval(15).build())
             .hour(SpecificTimesEntry.builder().times(Set.of(0)).build())
@@ -22,7 +23,18 @@ public class CronEntryParserUnitTest {
             .month(AllTimesEntry.builder().build())
             .dayOfWeek(TimeRangeEntry.builder().rangeFrom(1).rangeTo(5).build())
             .command("/usr/bin/find")
-            .build(),
-        cronEntry);
+            .build();
+
+    String actualOutput = cronVisitor.print(input);
+
+    assertEquals("""
+    minute        0 15 30 45
+    hour          0
+    day of month  1 15
+    month         1 2 3 4 5 6 7 8 9 10 11 12
+    day of week   1 2 3 4 5
+    command       /usr/bin/find
+    """, actualOutput);
+
   }
 }
